@@ -6,7 +6,7 @@ from app.utils.scheduler import start as start_scheduler
 
 start_scheduler()
 
-app = FastAPI(title="Appointment Booking System")
+app = FastAPI(title="Appointments Booking System")
 
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 app.include_router(users.router, prefix="/api/users", tags=["Users"])
