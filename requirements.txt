@@ -1,0 +1,22 @@
+fastapi==0.88.0
+uvicorn[standard]==0.20.0
+sqlalchemy==1.4.3
+pymysql==1.0.2
+python-dotenv==1.1.1
+alembic==1.16.3
+passlib[bcrypt]
+python-jose[cryptography]==3.5.0
+pydantic==1.10.2
+passlib==1.7.4
+python-jose==3.5.0
+bcrypt==4.3.0
+apscheduler==3.10.0
+fastapi-mail==1.2.5
+
+#pip install -r requirements.txt
+#uvicorn app.main:app --reload
+#alembic revision --autogenerate -m "create users table"  #for migration
+#alembic upgrade head #for migration
+#python seed/users.py #for seed
+#http://127.0.0.1:8000/docs Swagger
+#python --version = 3.10
