@@ -4,7 +4,6 @@ from app.database import SessionLocal
 from app.models.appoitment import Appointment, AppointmentStatus
 from app.schemas.appointment import AppointmentCreate, AppointmentResponse, AppointmentUpdateStatus
 from app.models.user import User, UserType
-from datetime import datetime
 from app.routers.auth import get_current_user
 from app.schemas.paginated import PaginatedResponse
 from math import ceil
@@ -95,17 +94,14 @@ def get_appointments_with_filters(
     elif current_user.user_type == UserType.admin and doctor_id:
         query = query.filter(Appointment.doctor_id == doctor_id)
 
-    # 📅 Date filtering
     if start_date:
         query = query.filter(Appointment.appointment_datetime >= datetime.combine(start_date, datetime.min.time()))
     if end_date:
         query = query.filter(Appointment.appointment_datetime <= datetime.combine(end_date, datetime.max.time()))
 
-    # 📌 Status filtering
     if status:
         query = query.filter(Appointment.status == status)
 
-    # 📦 Pagination
     total = query.count()
     total_pages = ceil(total / limit)
     appointments = query.order_by(Appointment.appointment_datetime.desc()) \
@@ -156,7 +152,6 @@ def update_appointment_status(
         if appointment.appointment_datetime < datetime.now():
             raise HTTPException(status_code=400, detail="Cannot cancel past appointments")
 
-        # Mark appointment as cancelled
         appointment.status = AppointmentStatus.cancelled
 
         # Free up schedule

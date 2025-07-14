@@ -51,21 +51,21 @@ def set_availability(
     now = datetime.now().time()
 
     for schedule in payload.schedules:
-        # 1. Check if date/time is not in the past
+        #Check if date/time is not in the past
         if schedule.date < today or (schedule.date == today and schedule.start_time <= now):
             raise HTTPException(
                 status_code=400,
                 detail=f"Schedule {schedule.date} {schedule.start_time} is in the past."
             )
 
-        # 2. Check if timeslot within business hours
+        #Check if timeslot within business hours
         if schedule.start_time < BUSINESS_START or schedule.end_time > BUSINESS_END:
             raise HTTPException(
                 status_code=400,
                 detail=f"Schedule {schedule.start_time} to {schedule.end_time} is outside business hours."
             )
 
-        # 3. Check for existing schedule
+        #Check for existing schedule
         exists = db.query(DoctorSchedule).filter(
             DoctorSchedule.doctor_id == target_doctor_id,
             DoctorSchedule.date == schedule.date,
@@ -79,7 +79,7 @@ def set_availability(
                 date=schedule.date,
                 start_time=schedule.start_time,
                 end_time=schedule.end_time,
-                status=schedule.status  # comes from the payload
+                status=schedule.status
             )
             db.add(new_slot)
             inserted_count += 1
@@ -177,7 +177,6 @@ def get_all_doctor_schedules(
                 "start_time": sched.start_time,
                 "end_time": sched.end_time,
                 'status': sched.status,
-                # add other schedule fields you want
             }
             for sched in doctor.schedules if getattr(sched, 'status', 'available') == 'available'
         ]
@@ -190,7 +189,6 @@ def get_all_doctor_schedules(
             "division": doctor.division,
             "district": doctor.district,
             "thana": doctor.thana,
-            # add other doctor fields you want
             "schedule": available_schedules,
         }
         response_data.append(doc_dict)

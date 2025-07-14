@@ -19,7 +19,6 @@ async def upload_image(
     if file.content_type not in ALLOWED_MIME_TYPES:
         raise HTTPException(status_code=400, detail="Only JPEG or PNG images allowed")
 
-    # Optional size check (read full file to validate size)
     contents = await file.read()
     if len(contents) > MAX_FILE_SIZE_MB * 1024 * 1024:
         raise HTTPException(status_code=400, detail="File size exceeds 5MB")
@@ -27,7 +26,6 @@ async def upload_image(
     # Reset file read pointer
     await file.seek(0)
 
-    # Prepare folder and file path
     target_dir = os.path.join(BASE_UPLOAD_DIR, folder)
     os.makedirs(target_dir, exist_ok=True)
 

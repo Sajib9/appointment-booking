@@ -30,7 +30,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     access_token = create_access_token(
         data={"sub": user.email, "user_id": user.id, "user_type": user.user_type},
-        expires_delta=60
+        expires_delta=600
     )
     return {"access_token": access_token, "token_type": "bearer"}
 

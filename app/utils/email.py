@@ -7,10 +7,10 @@ conf = ConnectionConfig(
     MAIL_FROM="your-email@example.com",
     MAIL_PORT=587,
     MAIL_SERVER="smtp.gmail.com",
-    MAIL_STARTTLS=True,      # Use this instead of MAIL_TLS
-    MAIL_SSL_TLS=False,      # Use this instead of MAIL_SSL
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,
     USE_CREDENTIALS=True,
-    # TEMPLATE_FOLDER="app/templates/email"  # Comment out if not using templates
+
 )
 
 fm = FastMail(conf)

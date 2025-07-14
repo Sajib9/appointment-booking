@@ -2,7 +2,6 @@ import sys
 import os
 from datetime import date, timedelta, time
 
-# Add project root to path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, project_root)
 
@@ -19,7 +18,7 @@ def seed_doctor_schedules():
     try:
         doctor = db.query(User).filter(User.email == "alice@example.com").first()
         if not doctor:
-            print("❌ Doctor not found. Please seed users first.")
+            print("Doctor not found. Please seed users first.")
             return
 
         # Clear old schedules
@@ -46,11 +45,11 @@ def seed_doctor_schedules():
 
         db.bulk_save_objects(schedules)
         db.commit()
-        print(f"✅ Seeded schedules for Dr. Alice Smith for {len(schedules)} slots.")
+        print(f"Seeded schedules for Dr. Alice Smith for {len(schedules)} slots.")
 
     except IntegrityError as e:
         db.rollback()
-        print("⚠️ Integrity Error:", e)
+        print("Integrity Error:", e)
     finally:
         db.close()
 

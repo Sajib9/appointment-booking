@@ -1,7 +1,6 @@
 import sys
 import os
 
-# Append the project root directory (one level up from 'seed')
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, project_root)
 
@@ -10,7 +9,6 @@ from app.models.user import User, UserType
 from app.utils.hash import hash_password
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from app.models.doctor_schedule import DoctorSchedule
 
 
 def seed_users():
@@ -39,7 +37,6 @@ def seed_users():
                 license_number="DOC-12345",
                 experience_years=8,
                 consultation_fee=1000,
-                # available_timeslots='["10:00-11:00", "14:00-15:00"]'
             ),
             User(
                 full_name="Patient One",
@@ -59,10 +56,10 @@ def seed_users():
                 db.add(user)
 
         db.commit()
-        print("✅ Seeded users successfully.")
+        print("Seeded users successfully.")
     except IntegrityError as e:
         db.rollback()
-        print("⚠️ Integrity Error:", e)
+        print("Integrity Error:", e)
     finally:
         db.close()
 

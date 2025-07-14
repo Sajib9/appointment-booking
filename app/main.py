@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from app.database import Base, engine
 from app.routers import auth, users,upload,appointments, doctor_schedule
 from app.utils.scheduler import start as start_scheduler
 

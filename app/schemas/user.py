@@ -23,7 +23,6 @@ class UserCreate(BaseModel):
     license_number: Optional[str]
     experience_years: Optional[int]
     consultation_fee: Optional[int]
-    # available_timeslots: Optional[str]
 
 class UserUpdate(BaseModel):
     full_name: Optional[str]
@@ -37,7 +36,7 @@ class UserUpdate(BaseModel):
     division: Optional[str]
     district: Optional[str]
     thana: Optional[str]
-    profile_image: Optional[str]  # assuming file URL or path
+    profile_image: Optional[str]
 
     # Doctor-only fields
     license_number: Optional[str]

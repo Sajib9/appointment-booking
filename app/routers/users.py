@@ -32,7 +32,6 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         license_number=user.license_number,
         experience_years=user.experience_years,
         consultation_fee=user.consultation_fee,
-        # available_timeslots=user.available_timeslots,
     )
     db.add(new_user)
     db.commit()
@@ -52,9 +51,9 @@ def update_profile(
 
     update_data = updates.dict(exclude_unset=True)
 
-    restricted_email_mobile = {"email"}
-    if restricted_email_mobile & update_data.keys():
-        raise HTTPException(status_code=403, detail="You cannot change email.")
+    # restricted_email_mobile = {"email"}
+    # if restricted_email_mobile & update_data.keys():
+    #     raise HTTPException(status_code=403, detail="You cannot change email.")
 
     # Prevent non-doctors from updating doctor-specific fields
     if current_user.user_type != UserType.doctor:
