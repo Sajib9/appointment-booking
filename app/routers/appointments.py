@@ -22,7 +22,7 @@ def get_db():
         db.close()
 
 @router.post("/", response_model=AppointmentResponse)
-def book_appointment(
+async def book_appointment(
     appointment: AppointmentCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -74,7 +74,7 @@ def book_appointment(
 
 
 @router.get("/", response_model=PaginatedResponse[AppointmentResponse])
-def get_appointments_with_filters(
+async def get_appointments_with_filters(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
@@ -118,7 +118,7 @@ def get_appointments_with_filters(
     )
 
 @router.put("/status-update")
-def update_appointment_status(
+async def update_appointment_status(
     data: AppointmentUpdateStatus,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)

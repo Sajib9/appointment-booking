@@ -25,7 +25,7 @@ BUSINESS_START = time(9, 0)  # 09:00
 BUSINESS_END = time(18, 0)   # 18:00
 
 @router.post("/set-availability")
-def set_availability(
+async def set_availability(
     payload: ScheduleBulkCreate,
     doctor_id: Optional[int] = None,
     current_user: User = Depends(get_current_user),
@@ -95,7 +95,7 @@ def set_availability(
 
 
 @router.get("/doctor-availability/{doctor_id}", response_model=PaginatedResponse[ScheduleResponse])
-def get_doctor_schedule(
+async def get_doctor_schedule(
     doctor_id: int,
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
@@ -123,7 +123,7 @@ def get_doctor_schedule(
     )
 
 @router.delete("/delete/{schedule_id}")
-def delete_schedule(
+async def delete_schedule(
     schedule_id: int = Path(..., description="Schedule ID to delete"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -144,7 +144,7 @@ def delete_schedule(
     return {"message": f"Schedule ID {schedule_id} deleted successfully"}
 
 @router.get("/doctor-availability", response_model=PaginatedResponse[DoctorBasicInfo])
-def get_all_doctor_schedules(
+async def get_all_doctor_schedules(
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1, le=100),

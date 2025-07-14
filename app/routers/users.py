@@ -16,7 +16,7 @@ from app.models.doctor_schedule import DoctorSchedule, ScheduleStatus
 router = APIRouter()
 
 @router.post("/register")
-def register(user: UserCreate, db: Session = Depends(get_db)):
+async def register(user: UserCreate, db: Session = Depends(get_db)):
     if db.query(User).filter((User.email == user.email) | (User.mobile == user.mobile)).first():
         raise HTTPException(status_code=400, detail="Email or Mobile already exists")
 
@@ -39,7 +39,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return {"message": "User created successfully"}
 
 @router.put("/update-profile")
-def update_profile(
+async def update_profile(
     updates: UserUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -71,7 +71,7 @@ def update_profile(
     return {"message": "Profile updated successfully"}
 
 @router.get("/doctors", response_model=PaginatedResponse[DoctorList])
-def get_doctors_list_with_filters(
+async def get_doctors_list_with_filters(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
     page: int = Query(1, ge=1),
@@ -125,7 +125,7 @@ def get_doctors_list_with_filters(
 
 
 @router.get("/patients", response_model=PaginatedResponse[PatientWithAppointments])
-def get_patients_list_with_filters(
+async def get_patients_list_with_filters(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
