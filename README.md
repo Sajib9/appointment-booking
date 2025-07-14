@@ -74,5 +74,10 @@
 - **Database Migrations**: Managing schema changes with Alembic.
 - **Seeder**: Creating a seeder script to populate initial data for testing.
 
+---
+### Contributor
 
+- Sajib Ahamed
+  - Sr. Software Engineer
+  - Apsis Solutions ltd
 
