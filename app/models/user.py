@@ -29,3 +29,9 @@ class User(Base):
     # available_timeslots = Column(Text, nullable=True)  # JSON string
 
     schedules = relationship("DoctorSchedule", back_populates="doctor", cascade="all, delete-orphan")
+
+    # Patients -> appointments they booked
+    appointments = relationship("Appointment", back_populates="patient", foreign_keys="Appointment.patient_id")
+
+    # Doctors -> appointments they received
+    doctor_appointments = relationship("Appointment", back_populates="doctor", foreign_keys="Appointment.doctor_id")
