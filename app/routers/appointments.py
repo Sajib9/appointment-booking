@@ -8,8 +8,9 @@ from datetime import datetime
 from app.routers.auth import get_current_user
 from app.schemas.paginated import PaginatedResponse
 from math import ceil
-import json
+from typing import Optional
 from app.models.doctor_schedule import DoctorSchedule, ScheduleStatus
+from datetime import datetime, date
 
 router = APIRouter()
 
@@ -74,19 +75,37 @@ def book_appointment(
 
 
 @router.get("/", response_model=PaginatedResponse[AppointmentResponse])
-def get_my_appointments(
+def get_appointments_with_filters(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1, le=100)
+    limit: int = Query(10, ge=1, le=100),
+    status: Optional[AppointmentStatus] = Query(None),
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    doctor_id: Optional[int] = Query(None)
 ):
     query = db.query(Appointment)
 
+    # 🔐 Access control
     if current_user.user_type == UserType.patient:
         query = query.filter(Appointment.patient_id == current_user.id)
     elif current_user.user_type == UserType.doctor:
         query = query.filter(Appointment.doctor_id == current_user.id)
+    elif current_user.user_type == UserType.admin and doctor_id:
+        query = query.filter(Appointment.doctor_id == doctor_id)
 
+    # 📅 Date filtering
+    if start_date:
+        query = query.filter(Appointment.appointment_datetime >= datetime.combine(start_date, datetime.min.time()))
+    if end_date:
+        query = query.filter(Appointment.appointment_datetime <= datetime.combine(end_date, datetime.max.time()))
+
+    # 📌 Status filtering
+    if status:
+        query = query.filter(Appointment.status == status)
+
+    # 📦 Pagination
     total = query.count()
     total_pages = ceil(total / limit)
     appointments = query.order_by(Appointment.appointment_datetime.desc()) \

@@ -21,3 +21,6 @@ class Appointment(Base):
 
     patient = relationship("User", foreign_keys=[patient_id])
     doctor = relationship("User", foreign_keys=[doctor_id])
+
+    patient = relationship("User", back_populates="appointments", foreign_keys=[patient_id])
+    doctor = relationship("User", back_populates="doctor_appointments", foreign_keys=[doctor_id])
